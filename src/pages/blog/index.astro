@@ -1,0 +1,73 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../data/site';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const byYear = new Map<number, typeof posts>();
+for (const post of posts) {
+  const year = post.data.pubDate.getUTCFullYear();
+  if (!byYear.has(year)) byYear.set(year, []);
+  byYear.get(year)!.push(post);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const readingTime = (text: string | undefined) =>
+  Math.max(1, Math.round((text?.trim().split(/\s+/).length ?? 0) / 220));
+---
+
+<Base title="Writing & Notes — abh1" description="Technical articles, architecture deep-dives, and software engineering notes by abh1.">
+  <div class="mx-auto max-w-4xl px-5 pt-16 sm:px-6 sm:pt-24">
+    <h1 class="text-balance text-4xl font-semibold tracking-[-0.03em] text-zinc-50 sm:text-5xl">
+      Writing
+    </h1>
+    <p class="mt-4 max-w-[58ch] leading-relaxed text-zinc-400">
+      Technical articles, architecture deep-dives, and software engineering notes &mdash; written from real hands-on implementation.
+    </p>
+
+    {
+      years.length === 0 ? (
+        <p class="mt-16 border-t border-white/[0.06] pt-10 text-zinc-500">
+          Nothing here yet.
+        </p>
+      ) : (
+        years.map((year) => (
+          <section class="mt-14" aria-label={`Posts from ${year}`}>
+            <div class="grid gap-x-8 md:grid-cols-[6rem_1fr]">
+              <div class="mt-5 font-mono text-sm tabular-nums text-zinc-500">{year}</div>
+              <ul>
+                {byYear.get(year)!.map((post) => (
+                  <li class="border-t border-white/[0.06] last:border-b">
+                    <a href={`/blog/${post.id}/`} class="group block py-5">
+                      <time
+                        datetime={post.data.pubDate.toISOString()}
+                        class="font-mono text-[13px] tabular-nums text-zinc-500"
+                      >
+                        {formatDate(post.data.pubDate)}
+                      </time>
+                      <span class="mt-1.5 block font-medium text-zinc-100 transition-colors duration-150 group-hover:text-white">
+                        {post.data.title}
+                      </span>
+                      <span class="mt-1 line-clamp-2 block text-sm leading-relaxed text-zinc-400">
+                        {post.data.description}
+                      </span>
+                      <span class="mt-2 block font-mono text-xs tabular-nums text-zinc-600">
+                        {readingTime(post.body)} min read
+                        {post.data.tags.length > 0 && (
+                          <span class="ml-3">{post.data.tags.map((t) => `#${t}`).join(' ')}</span>
+                        )}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ))
+      )
+    }
+  </div>
+</Base>

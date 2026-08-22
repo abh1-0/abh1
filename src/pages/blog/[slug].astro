@@ -1,0 +1,116 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { formatDate } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      newer: posts[i - 1] ?? null,
+      older: posts[i + 1] ?? null
+    }
+  }));
+}
+
+const { post, newer, older } = Astro.props;
+const { Content } = await render(post);
+
+const readingTime = Math.max(
+  1,
+  Math.round((post.body?.trim().split(/\s+/).length ?? 0) / 220)
+);
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  author: { '@type': 'Person', name: 'abh1', url: 'https://abh1.xyz/' },
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).toString()
+};
+---
+
+<Base
+  title={`${post.data.title} — abh1`}
+  description={post.data.description}
+  schema={articleSchema}
+>
+  <article class="mx-auto max-w-4xl px-5 pt-16 sm:px-6 sm:pt-24">
+    <div class="mx-auto max-w-[65ch]">
+      <a
+        href="/blog"
+        class="text-sm text-zinc-400 transition-colors duration-150 hover:text-zinc-100"
+      >
+        &larr; All posts
+      </a>
+
+      <header class="mt-8">
+        <h1
+          class="text-balance text-3xl font-semibold tracking-[-0.03em] text-zinc-50 sm:text-4xl"
+        >
+          {post.data.title}
+        </h1>
+        <p class="mt-4 font-mono text-[13px] tabular-nums text-zinc-500">
+          <time datetime={post.data.pubDate.toISOString()}>
+            {formatDate(post.data.pubDate)}
+          </time>
+          <span aria-hidden="true"> &middot; </span>{readingTime} min read
+          {
+            post.data.tags.length > 0 && (
+              <span class="ml-2">
+                {post.data.tags.map((t) => `#${t}`).join(' ')}
+              </span>
+            )
+          }
+        </p>
+      </header>
+
+      <div class="prose mt-10">
+        <Content />
+      </div>
+
+      <nav
+        class="mt-16 border-t border-white/[0.06] pt-6"
+        aria-label="Post navigation"
+      >
+        <div class="flex flex-col gap-4 sm:flex-row sm:justify-between">
+          {
+            older ? (
+              <a href={`/blog/${older.id}/`} class="group min-w-0">
+                <span class="block font-mono text-xs uppercase tracking-wide text-zinc-500">
+                  Older
+                </span>
+                <span class="mt-1 block truncate font-medium text-zinc-300 transition-colors duration-150 group-hover:text-white">
+                  {older.data.title}
+                </span>
+              </a>
+            ) : (
+              <span />
+            )
+          }
+          {
+            newer && (
+              <a
+                href={`/blog/${newer.id}/`}
+                class="group min-w-0 sm:text-right"
+              >
+                <span class="block font-mono text-xs uppercase tracking-wide text-zinc-500">
+                  Newer
+                </span>
+                <span class="mt-1 block truncate font-medium text-zinc-300 transition-colors duration-150 group-hover:text-white">
+                  {newer.data.title}
+                </span>
+              </a>
+            )
+          }
+        </div>
+      </nav>
+    </div>
+  </article>
+</Base>

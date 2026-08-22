@@ -1,0 +1,134 @@
+---
+import Icon from './Icon.astro';
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  priority?: boolean;
+}
+
+const { project, priority = false } = Astro.props;
+---
+
+<article
+  class="group relative flex flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02] transition-all duration-300 hover:border-white/[0.18] hover:bg-white/[0.04] hover:shadow-2xl hover:shadow-black/60"
+  data-category={project.category}
+>
+  <!-- Project Screenshot Container -->
+  <div class="relative aspect-[16/9] w-full overflow-hidden bg-zinc-950/80">
+    <img
+      src={project.image}
+      alt={`${project.title} preview screenshot`}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
+      class="h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-60"
+    ></div>
+
+    <!-- Category Pill -->
+    <div class="absolute left-3.5 top-3.5 flex items-center gap-2">
+      <span
+        class="inline-flex items-center rounded-full border border-white/10 bg-zinc-950/70 px-2.5 py-1 text-[11px] font-medium tracking-wide text-zinc-300 backdrop-blur-md"
+      >
+        {project.category}
+      </span>
+      {
+        project.stars && (
+          <span class="inline-flex items-center gap-1 rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-1 text-[11px] font-mono font-medium text-amber-300 backdrop-blur-md">
+            ★ {project.stars}
+          </span>
+        )
+      }
+    </div>
+
+    <!-- View Screenshot Overlay Trigger -->
+    <button
+      type="button"
+      data-modal-target={project.id}
+      class="project-modal-trigger absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-lg border border-white/15 bg-zinc-900/80 text-zinc-300 opacity-0 backdrop-blur-md transition-all duration-200 hover:scale-105 hover:bg-zinc-800 hover:text-white group-hover:opacity-100"
+      title="Expand screenshot"
+      aria-label={`View full screenshot of ${project.title}`}
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 3h6v6m0-6L14 10M9 21H3v-6m0 6l7-7" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Content Container -->
+  <div class="flex flex-1 flex-col justify-between p-5 sm:p-6">
+    <div>
+      <div class="flex items-baseline justify-between gap-3">
+        <h3 class="text-xl font-semibold tracking-tight text-zinc-50 transition-colors group-hover:text-white">
+          {project.title}
+        </h3>
+      </div>
+      <p class="mt-1 text-xs text-zinc-400">
+        {project.tagline}
+      </p>
+
+      <p class="mt-3 text-sm leading-relaxed text-zinc-400">
+        {project.description}
+      </p>
+
+      <!-- Highlights list -->
+      {
+        project.highlights && project.highlights.length > 0 && (
+          <ul class="mt-3.5 space-y-1 text-xs text-zinc-400">
+            {project.highlights.map((item) => (
+              <li class="flex items-center gap-2">
+                <span class="h-1 w-1 rounded-full bg-zinc-500"></span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    <div class="mt-6 pt-4 border-t border-white/[0.06]">
+      <!-- Tech Tags -->
+      <div class="flex flex-wrap gap-1.5 mb-4">
+        {
+          project.tags.map((tag) => (
+            <span class="rounded border border-white/[0.06] bg-white/[0.03] px-2 py-0.5 font-mono text-[11px] text-zinc-300">
+              {tag}
+            </span>
+          ))
+        }
+      </div>
+
+      <!-- Action Links -->
+      <div class="flex items-center gap-3">
+        {
+          project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 rounded-lg bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-950 transition-colors duration-150 hover:bg-white"
+            >
+              <span>Live Demo</span>
+              <Icon name="arrow-up-right" class="h-3 w-3" />
+            </a>
+          )
+        }
+        {
+          project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-zinc-200 transition-colors duration-150 hover:bg-white/[0.08]"
+            >
+              <Icon name="github" class="h-3.5 w-3.5" />
+              <span>Source</span>
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</article>

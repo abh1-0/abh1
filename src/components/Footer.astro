@@ -1,0 +1,37 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-28 border-t border-white/[0.06]">
+  <div
+    class="mx-auto flex max-w-4xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6"
+  >
+    <p class="text-[13px] leading-relaxed text-zinc-500">
+      &copy; {year} abh1 &middot; <a
+        href={`mailto:${site.email}`}
+        class="transition-colors duration-150 hover:text-zinc-300">{site.email}</a
+      >
+      <span class="block sm:inline"><span class="sm:hidden">&middot; </span>Built with Astro.</span>
+    </p>
+    <div class="flex items-center gap-4">
+      <a
+        href="/rss.xml"
+        aria-label="RSS feed"
+        class="text-zinc-500 transition-colors duration-150 hover:text-zinc-200"
+      >
+        <Icon name="rss" class="h-4 w-4" />
+      </a>
+      <a
+        href={`https://github.com/${site.githubUser}/`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[13px] text-zinc-500 transition-colors duration-150 hover:text-zinc-200"
+      >
+        source
+      </a>
+    </div>
+  </div>
+</footer>
