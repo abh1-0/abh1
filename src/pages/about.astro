@@ -11,7 +11,7 @@ const techStack = [
   },
   {
     category: 'Systems, Tools & Languages',
-    items: ['Node.js', 'Go', 'Rust', 'C / C++', 'Python', 'Shell Scripting', 'Git & GitHub Actions', 'Vite / Rollup']
+    items: ['Windows Internals & PowerShell', 'Node.js', 'Go', 'Rust', 'C / C++', 'Python', 'Shell Scripting', 'Git & GitHub Actions', 'Vite / Rollup']
   },
   {
     category: 'Backend & Data Protocols',
@@ -32,6 +32,13 @@ const timeline = [
       'Designing high-performance web tools, custom browser shells, telemetry dashboards, and headless component systems.'
   },
   {
+    period: '2023 — Present',
+    role: 'Windows OS Customization & System Research',
+    organization: 'Windows Systems Lab',
+    description:
+      'Extensive history of Windows OS customization, PowerShell automation scripts, kernel-level governor tuning, telemetry stripping, and custom desktop shells.'
+  },
+  {
     period: '2023 — 2024',
     role: 'Frontend Architect & UI Engineer',
     organization: 'Web Platforms',
@@ -46,11 +53,26 @@ const timeline = [
       'Built cross-platform network utilities, power optimization governors, and web APIs used across open-source communities.'
   }
 ];
+
+const windowsExperiments = [
+  {
+    title: 'Kernel & Resource Tuning',
+    desc: 'Custom power governor modules, CPU scaling curves, thermal throttling adjustments, and thread prioritization tweaks for maximum gaming and workload throughput.'
+  },
+  {
+    title: 'Windows Subsystem & CLI Automation',
+    desc: 'Deep integration of PowerShell, WSL2 Linux subsystems, automated environment provisioning, and custom command-line utilities.'
+  },
+  {
+    title: 'Shell Customization & Debloating',
+    desc: 'Tailored Windows UI modifications, registry optimizations, services debloating scripts, and lightweight window management workflows.'
+  }
+];
 ---
 
 <Base
   title="About & Skills — abh1"
-  description="Engineering background, skills matrix, and career timeline of abh1 — Software Engineer & Full-Stack Architect."
+  description="Engineering background, Windows OS experiments history, skills matrix, and career timeline of abh1."
 >
   <div class="mx-auto max-w-4xl px-5 pt-12 sm:px-6 sm:pt-20">
     <!-- Header -->
@@ -60,7 +82,7 @@ const timeline = [
           About & Engineering
         </h1>
         <p class="mt-4 text-base leading-relaxed text-zinc-400">
-          I&rsquo;m <strong class="text-zinc-200">abh1</strong>, a software engineer with a passion for building clean, resilient, and visually captivating software.
+          I&rsquo;m <strong class="text-zinc-200">abh1</strong>, a software engineer with a passion for building clean, resilient, and visually captivating software across web and low-level OS environments.
         </p>
       </div>
       <img
@@ -79,11 +101,32 @@ const timeline = [
       </h2>
       <div class="mt-4 space-y-4 text-base leading-relaxed text-zinc-400">
         <p>
-          I believe software should be fast, quiet, and durable. Whether designing a complex web dashboard, crafting a developer workbench, or writing low-level utilities, I focus on zero-bloat architecture, strict visual hierarchy, and sub-16ms responsive interactions.
+          I believe software should be fast, quiet, and durable. Whether designing a complex web dashboard, crafting a developer workbench, or writing low-level utilities and OS tweaks, I focus on zero-bloat architecture, strict visual hierarchy, and sub-16ms responsive interactions.
         </p>
         <p>
-          My work spans full-stack web platforms, developer utilities, and network protocols. I prioritize primary-source evidence, verifiable benchmarks, and immaculate user experiences over flashy trends.
+          My work spans full-stack web platforms, developer utilities, Windows OS customization experiments, and network protocols. I prioritize primary-source evidence, verifiable benchmarks, and immaculate user experiences over flashy trends.
         </p>
+      </div>
+    </section>
+
+    <!-- Windows Experiments History -->
+    <section class="mt-16">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-50">
+        Windows OS Experiments & Systems History
+      </h2>
+      <p class="mt-1 text-sm text-zinc-400">
+        Hands-on background in low-level Windows kernel tuning, shell modifications, debloating, and systems scripting.
+      </p>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
+        {
+          windowsExperiments.map((exp) => (
+            <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5 transition-all duration-200 hover:border-white/[0.16] hover:bg-white/[0.04]">
+              <h3 class="font-medium text-zinc-100">{exp.title}</h3>
+              <p class="mt-2.5 text-xs leading-relaxed text-zinc-400">{exp.desc}</p>
+            </div>
+          ))
+        }
       </div>
     </section>
 

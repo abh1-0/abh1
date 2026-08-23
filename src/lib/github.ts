@@ -21,24 +21,6 @@ const EXCLUDED_REPOS = [
 
 const FALLBACK_REPOS: Repo[] = [
   {
-    name: 'aether-studio',
-    description:
-      'An AI-augmented collaborative web IDE & visual design workbench with instant DOM previewing.',
-    language: 'TypeScript',
-    stars: 48,
-    url: `https://github.com/${site.githubUser}/aether-studio`,
-    pushedAt: null
-  },
-  {
-    name: 'pulse-metrics',
-    description:
-      'High-throughput distributed telemetry & real-time application analytics platform.',
-    language: 'TypeScript',
-    stars: 34,
-    url: `https://github.com/${site.githubUser}/pulse-metrics`,
-    pushedAt: null
-  },
-  {
     name: 'oplus-battery',
     description:
       'Low-level performance governor module for battery optimization and CPU scaling.',
@@ -66,12 +48,30 @@ const FALLBACK_REPOS: Repo[] = [
     pushedAt: null
   },
   {
-    name: 'nexus-ui',
+    name: 'cyber-slice-neon-blade',
     description:
-      'Accessible, zero-runtime headless UI component system with CSS token architecture.',
+      'Neon blade slice web game built with modern canvas graphics and audio.',
     language: 'TypeScript',
-    stars: 62,
-    url: `https://github.com/${site.githubUser}/nexus-ui`,
+    stars: 15,
+    url: `https://github.com/${site.githubUser}/cyber-slice-neon-blade`,
+    pushedAt: null
+  },
+  {
+    name: 'dawn',
+    description:
+      'Minimalist system setup and developer environment configuration.',
+    language: 'Shell',
+    stars: 12,
+    url: `https://github.com/${site.githubUser}/dawn`,
+    pushedAt: null
+  },
+  {
+    name: 'abh1',
+    description:
+      'Personal portfolio and engineering website built with Astro and Tailwind CSS.',
+    language: 'TypeScript',
+    stars: 10,
+    url: `https://github.com/${site.githubUser}/abh1`,
     pushedAt: null
   }
 ];

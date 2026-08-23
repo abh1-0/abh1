@@ -1,21 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import ProjectModal from '../components/ProjectModal.astro';
 import CopyEmailButton from '../components/CopyEmailButton.astro';
 import { getCollection } from 'astro:content';
 import { socials, formatDate, site } from '../data/site';
-import { projects } from '../data/projects';
 import { getRepos, langColor } from '../lib/github';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-const featuredProjects = projects.filter((p) => p.featured).slice(0, 4);
-
-const repos = await getRepos(4);
+const repos = await getRepos(6);
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -62,7 +57,7 @@ const personSchema = {
           href="/work"
           class="inline-flex items-center gap-2 rounded-lg bg-zinc-50 px-4 py-2.5 text-sm font-medium text-zinc-950 transition-colors duration-150 hover:bg-zinc-200"
         >
-          <span>Explore Featured Work</span>
+          <span>Explore Open Source</span>
           <Icon name="arrow-up-right" class="h-4 w-4" />
         </a>
         <a
@@ -80,8 +75,8 @@ const personSchema = {
       <!-- Quick Metrics Bar -->
       <div class="rise rise-5 mt-14 grid grid-cols-2 gap-4 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 sm:grid-cols-4 sm:p-5">
         <div>
-          <span class="block text-2xl font-bold font-mono tracking-tight text-zinc-100">6+</span>
-          <span class="text-xs text-zinc-400">Featured Projects</span>
+          <span class="block text-2xl font-bold font-mono tracking-tight text-zinc-100">10+</span>
+          <span class="text-xs text-zinc-400">Open Repositories</span>
         </div>
         <div>
           <span class="block text-2xl font-bold font-mono tracking-tight text-zinc-100">100%</span>
@@ -98,34 +93,6 @@ const personSchema = {
       </div>
     </section>
 
-    <!-- Featured Projects Showcase (With Images) -->
-    <section aria-labelledby="projects-heading" class="mt-12">
-      <div class="flex items-baseline justify-between gap-4">
-        <div>
-          <h2 id="projects-heading" class="text-2xl font-semibold tracking-tight text-zinc-50">
-            Featured Projects
-          </h2>
-          <p class="mt-1 text-sm text-zinc-400">Bespoke web applications, developer tools, and systems software.</p>
-        </div>
-        <a
-          href="/work"
-          class="group inline-flex items-center gap-1.5 text-sm text-zinc-400 transition-colors duration-150 hover:text-zinc-100"
-        >
-          View all work
-          <Icon
-            name="arrow-up-right"
-            class="h-3.5 w-3.5 transition-transform duration-150 group-hover:-translate-y-px group-hover:translate-x-px"
-          />
-        </a>
-      </div>
-
-      <div class="mt-8 grid gap-8 sm:grid-cols-2">
-        {featuredProjects.map((project, idx) => (
-          <ProjectCard project={project} priority={idx < 2} />
-        ))}
-      </div>
-    </section>
-
     <!-- Technical Core Competencies -->
     <section aria-labelledby="skills-heading" class="mt-24">
       <h2 id="skills-heading" class="text-2xl font-semibold tracking-tight text-zinc-50">
@@ -134,7 +101,7 @@ const personSchema = {
       <p class="mt-1 text-sm text-zinc-400">Engineering domains and modern stack expertise.</p>
 
       <div class="mt-8 grid gap-4 sm:grid-cols-3">
-        <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5">
+        <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5 transition-all duration-200 hover:border-white/[0.16] hover:bg-white/[0.04]">
           <div class="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-200">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -146,7 +113,7 @@ const personSchema = {
           </p>
         </div>
 
-        <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5">
+        <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5 transition-all duration-200 hover:border-white/[0.16] hover:bg-white/[0.04]">
           <div class="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-200">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -158,7 +125,7 @@ const personSchema = {
           </p>
         </div>
 
-        <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5">
+        <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5 transition-all duration-200 hover:border-white/[0.16] hover:bg-white/[0.04]">
           <div class="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-zinc-200">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
@@ -315,7 +282,4 @@ const personSchema = {
       </ul>
     </section>
   </div>
-
-  <!-- Lightbox Modal for Screenshots -->
-  <ProjectModal />
 </Base>

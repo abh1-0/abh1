@@ -7,7 +7,7 @@ tags: ['frontend', 'performance', 'canvas', 'typescript']
 
 Achieving smooth 60fps rendering in modern web interfaces requires strict discipline around DOM mutations, layout thrashing, and event handlers.
 
-When building [Aether Studio](/work) and [Pulse Telemetry](/work), maintaining smooth rendering while streaming continuous telemetry updates was a core constraint. Here are key techniques for keeping execution loops within 16.6ms per frame:
+When building real-time dashboards and interactive web tools, maintaining smooth rendering while streaming continuous telemetry updates is a core constraint. Here are key techniques for keeping execution loops within 16.6ms per frame:
 
 ## 1. Decouple State Updates from the Render Loop
 

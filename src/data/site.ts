@@ -6,7 +6,7 @@ export const site = {
   description:
     'Personal portfolio of abh1 — Software engineer crafting high-performance web software, developer tools, and systems architectures.',
   role: 'Software Engineer & Full-Stack Architect',
-  email: 'contact@abh1.xyz'
+  email: 'abhiramvun@gmail.com'
 } as const;
 
 export const nav = [
@@ -17,11 +17,10 @@ export const nav = [
 
 export type SocialIcon =
   | 'github'
+  | 'youtube'
   | 'telegram'
   | 'instagram'
-  | 'facebook'
   | 'x'
-  | 'linkedin'
   | 'mail';
 
 export interface Social {
@@ -30,15 +29,13 @@ export interface Social {
   icon: SocialIcon;
 }
 
-/** Handles are placeholders under the abh1_0 family until real URLs land here. */
 export const socials: Social[] = [
   { label: 'GitHub', href: 'https://github.com/abh1-0', icon: 'github' },
+  { label: 'YouTube', href: 'https://youtube.com/@abh1-c0', icon: 'youtube' },
   { label: 'Telegram', href: 'https://t.me/abh1_0', icon: 'telegram' },
-  { label: 'Instagram', href: 'https://instagram.com/abh1_0', icon: 'instagram' },
-  { label: 'Facebook', href: 'https://facebook.com/abh1.0', icon: 'facebook' },
-  { label: 'X', href: 'https://x.com/abh1_0', icon: 'x' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/abh1-0', icon: 'linkedin' },
-  { label: 'Email', href: 'mailto:contact@abh1.xyz', icon: 'mail' }
+  { label: 'Instagram', href: 'https://instagram.com/abhiram.vunnava', icon: 'instagram' },
+  { label: 'X', href: 'https://x.com/abh1ram_0', icon: 'x' },
+  { label: 'Email', href: 'mailto:abhiramvun@gmail.com', icon: 'mail' }
 ];
 
 export function formatDate(date: Date): string {

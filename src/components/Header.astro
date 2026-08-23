@@ -1,33 +1,49 @@
 ---
 import { nav } from '../data/site';
+
+const currentPath = Astro.url.pathname;
 ---
 
 <header
   id="site-header"
-  class="sticky top-0 z-50 border-b border-transparent transition-colors duration-300"
+  class="sticky top-0 z-50 border-b border-transparent transition-all duration-300"
 >
   <div class="mx-auto flex h-14 max-w-4xl items-center justify-between px-5 sm:px-6">
-    <a href="/" class="text-[15px] font-semibold tracking-tight text-zinc-50">
-      abh1<span class="font-normal text-zinc-600">.xyz</span>
+    <a
+      href="/"
+      class="text-[15px] font-semibold tracking-tight text-zinc-50 transition-opacity hover:opacity-85"
+    >
+      abh1<span class="font-normal text-zinc-500">.xyz</span>
     </a>
 
-    <nav aria-label="Main" class="flex items-center gap-1">
+    <nav aria-label="Main Navigation" class="flex items-center gap-1">
       {
-        nav.map((item) => (
-          <a
-            href={item.href}
-            class="rounded-md px-3 py-1.5 text-sm text-zinc-400 transition-colors duration-150 hover:text-zinc-50"
-          >
-            {item.label}
-          </a>
-        ))
+        nav.map((item) => {
+          const isActive =
+            item.href === '/'
+              ? currentPath === '/'
+              : currentPath.startsWith(item.href);
+          return (
+            <a
+              href={item.href}
+              aria-current={isActive ? 'page' : undefined}
+              class={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-150 ${
+                isActive
+                  ? 'bg-white/[0.08] text-zinc-100 shadow-sm border border-white/10'
+                  : 'text-zinc-400 hover:bg-white/[0.04] hover:text-zinc-200'
+              }`}
+            >
+              {item.label}
+            </a>
+          );
+        })
       }
       <a
         href="https://github.com/abh1-0"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="GitHub"
-        class="ml-1 rounded-md p-2 text-zinc-400 transition-colors duration-150 hover:text-zinc-50"
+        aria-label="GitHub Profile"
+        class="ml-1 rounded-lg p-2 text-zinc-400 transition-colors duration-150 hover:bg-white/[0.04] hover:text-zinc-100"
       >
         <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path
@@ -45,8 +61,8 @@ import { nav } from '../data/site';
     if (!header) return;
     const update = () => {
       const scrolled = window.scrollY > 8;
-      header.classList.toggle('border-white/[0.06]', scrolled);
-      header.classList.toggle('bg-[#09090b]/80', scrolled);
+      header.classList.toggle('border-white/[0.08]', scrolled);
+      header.classList.toggle('bg-[#09090b]/85', scrolled);
       header.classList.toggle('backdrop-blur-md', scrolled);
     };
     update();

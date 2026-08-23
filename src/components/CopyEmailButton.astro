@@ -3,38 +3,43 @@ import { site } from '../data/site';
 ---
 
 <button
-  id="copy-email-btn"
   type="button"
-  data-email={site.email}
-  class="group inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs font-medium text-zinc-300 transition-all duration-150 hover:border-white/20 hover:bg-white/[0.07] hover:text-white"
+  data-copy-email={site.email}
+  class="copy-email-trigger group inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3.5 py-2 text-xs font-medium text-zinc-300 transition-all duration-150 hover:border-white/20 hover:bg-white/[0.07] hover:text-white focus-visible:ring-2 focus-visible:ring-emerald-400/50"
 >
-  <svg class="h-3.5 w-3.5 text-zinc-400 group-hover:text-zinc-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg class="h-3.5 w-3.5 text-zinc-400 transition-colors group-hover:text-zinc-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
   </svg>
-  <span id="copy-email-text">{site.email}</span>
+  <span class="copy-email-text">{site.email}</span>
 </button>
 
 <script>
   function initCopyEmail() {
-    const btn = document.getElementById('copy-email-btn');
-    const text = document.getElementById('copy-email-text');
-    if (!btn || !text) return;
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.copy-email-trigger');
+    buttons.forEach((btn) => {
+      if (btn.dataset.initialized) return;
+      btn.dataset.initialized = 'true';
 
-    btn.addEventListener('click', async () => {
-      const email = btn.getAttribute('data-email') || 'contact@abh1.xyz';
-      try {
-        await navigator.clipboard.writeText(email);
-        const originalText = text.innerText;
-        text.innerText = 'Copied to clipboard!';
-        btn.classList.add('border-emerald-500/40', 'text-emerald-300');
+      const labelEl = btn.querySelector('.copy-email-text');
+      const email = btn.getAttribute('data-copy-email') || 'contact@abh1.xyz';
 
-        setTimeout(() => {
-          text.innerText = originalText;
-          btn.classList.remove('border-emerald-500/40', 'text-emerald-300');
-        }, 2000);
-      } catch (err) {
-        console.error('Failed to copy', err);
-      }
+      btn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(email);
+          if (labelEl) {
+            const originalText = labelEl.textContent;
+            labelEl.textContent = 'Copied to clipboard!';
+            btn.classList.add('border-emerald-500/40', 'bg-emerald-500/10', 'text-emerald-300');
+
+            setTimeout(() => {
+              labelEl.textContent = originalText;
+              btn.classList.remove('border-emerald-500/40', 'bg-emerald-500/10', 'text-emerald-300');
+            }, 2000);
+          }
+        } catch (err) {
+          console.error('Failed to copy email:', err);
+        }
+      });
     });
   }
 
