@@ -5,7 +5,12 @@ import CopyEmailButton from '../components/CopyEmailButton.astro';
 import { Image } from 'astro:assets';
 import avatar from '../assets/avatar.png';
 import { socials, site } from '../data/site';
-import { profilePageSchema } from '../lib/seo';
+import {
+  profilePageSchema,
+  breadcrumbSchema,
+  faqPageSchema,
+  graphSchema
+} from '../lib/seo';
 
 const techStack = [
   {
@@ -71,12 +76,36 @@ const windowsExperiments = [
     desc: 'Tailored Windows UI modifications, registry optimizations, services debloating scripts, and lightweight window management workflows.'
   }
 ];
+
+const faqs = [
+  {
+    question: 'Who is Abhiram Vunnava?',
+    answer: 'Abhiram Vunnava (online handle: abh1) is a Software Engineer & Full-Stack Architect based in Hyderabad, India, specializing in high-performance web platforms, developer tools, and systems software.'
+  },
+  {
+    question: 'Where is Abhiram Vunnava located?',
+    answer: 'Abhiram Vunnava is based in Hyderabad, Telangana, India (UTC+5:30).'
+  },
+  {
+    question: 'What engineering domains does Abhiram Vunnava specialize in?',
+    answer: 'Abhiram specializes in TypeScript, Astro, Next.js, WebAssembly, Windows OS customization, kernel tuning, and network protocols.'
+  }
+];
+
+const aboutSchema = graphSchema(
+  profilePageSchema('/about/', 'About & Engineering — Abhiram Vunnava'),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about/' }
+  ]),
+  faqPageSchema(faqs)
+);
 ---
 
 <Base
   title="About & Skills — Abhiram Vunnava"
   description="Engineering background, Windows OS experiments history, skills matrix, and career timeline of Abhiram Vunnava (abh1), software engineer based in Hyderabad, India."
-  schema={profilePageSchema('/about/', 'About & Engineering — Abhiram Vunnava')}
+  schema={aboutSchema}
 >
   <div class="mx-auto max-w-4xl px-5 pt-12 sm:px-6 sm:pt-20">
     <!-- Header -->
@@ -188,8 +217,25 @@ const windowsExperiments = [
       </div>
     </section>
 
-    <!-- Contact & Socials -->
+    <!-- Frequently Asked Questions (AI Search & GEO Ready) -->
     <section class="mt-20 border-t border-white/[0.08] pt-12">
+      <h2 class="text-xl font-semibold tracking-tight text-zinc-50">
+        Frequently Asked Questions
+      </h2>
+      <div class="mt-6 space-y-4">
+        {
+          faqs.map((faq) => (
+            <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5">
+              <h3 class="font-medium text-sm text-zinc-100">{faq.question}</h3>
+              <p class="mt-2 text-xs leading-relaxed text-zinc-400">{faq.answer}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Contact & Socials -->
+    <section class="mt-16 border-t border-white/[0.08] pt-12">
       <h2 class="text-xl font-semibold tracking-tight text-zinc-50">
         Get in Touch
       </h2>

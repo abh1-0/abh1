@@ -77,6 +77,34 @@ export function websiteSchema() {
   } as const;
 }
 
+export function breadcrumbSchema(items: { name: string; path: string }[]) {
+  return {
+    '@type': 'BreadcrumbList',
+    '@id': `${SITE_URL}/#breadcrumb`,
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.path)
+    }))
+  };
+}
+
+export function faqPageSchema(faqs: { question: string; answer: string }[]) {
+  return {
+    '@type': 'FAQPage',
+    '@id': `${SITE_URL}/#faq`,
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer
+      }
+    }))
+  };
+}
+
 export function graphSchema(...nodes: Record<string, unknown>[]) {
   return {
     '@context': 'https://schema.org',

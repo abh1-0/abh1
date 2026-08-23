@@ -3,7 +3,12 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import { getRepos, langColor } from '../lib/github';
 import { site } from '../data/site';
-import { absoluteUrl, collectionPageSchema } from '../lib/seo';
+import {
+  absoluteUrl,
+  collectionPageSchema,
+  breadcrumbSchema,
+  graphSchema
+} from '../lib/seo';
 
 const repos = await getRepos(16);
 
@@ -13,12 +18,20 @@ const workSchema = collectionPageSchema(
   'Open-source software, developer tools, and systems projects by Abhiram Vunnava (abh1), a software engineer based in Hyderabad, India.',
   repos.map((repo) => ({ name: repo.name, url: repo.url.startsWith('http') ? repo.url : absoluteUrl(repo.url) }))
 );
+
+const pageSchema = graphSchema(
+  workSchema,
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Work', path: '/work/' }
+  ])
+);
 ---
 
 <Base
   title="Work & Open Source — Abhiram Vunnava"
   description="Open-source software, developer tools, and systems projects by Abhiram Vunnava (abh1), a software engineer based in Hyderabad, India."
-  schema={workSchema}
+  schema={pageSchema}
 >
   <div class="mx-auto max-w-4xl px-5 pt-12 sm:px-6 sm:pt-20">
     <!-- Header section -->
