@@ -2,6 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
 import { formatDate } from '../../data/site';
+import { blogPostingSchema } from '../../lib/seo';
+import { BlogInteractions } from '../../components/ui/BlogInteractions';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
@@ -25,20 +27,27 @@ const readingTime = Math.max(
   Math.round((post.body?.trim().split(/\s+/).length ?? 0) / 220)
 );
 
-const articleSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: post.data.title,
+const wordCount = post.body?.trim().split(/\s+/).length ?? 0;
+
+const fullTitle = `${post.data.title} — Abhiram Vunnava`;
+const pageTitle = fullTitle.length <= 65 ? fullTitle : post.data.title;
+
+const articleSchema = blogPostingSchema({
+  title: post.data.title,
   description: post.data.description,
-  datePublished: post.data.pubDate.toISOString(),
-  author: { '@type': 'Person', name: 'abh1', url: 'https://abh1.xyz/' },
-  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).toString()
-};
+  path: `/blog/${post.id}/`,
+  pubDate: post.data.pubDate,
+  tags: post.data.tags,
+  wordCount
+});
 ---
 
 <Base
-  title={`${post.data.title} — abh1`}
+  title={pageTitle}
   description={post.data.description}
+  ogType="article"
+  publishedTime={post.data.pubDate}
+  tags={post.data.tags}
   schema={articleSchema}
 >
   <article class="mx-auto max-w-4xl px-5 pt-16 sm:px-6 sm:pt-24">
@@ -74,6 +83,9 @@ const articleSchema = {
       <div class="prose mt-10">
         <Content />
       </div>
+
+      <!-- MicroExpander Liking, Sharing, and Public Discussion -->
+      <BlogInteractions client:load slug={post.id} />
 
       <nav
         class="mt-16 border-t border-white/[0.06] pt-6"

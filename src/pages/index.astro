@@ -3,8 +3,11 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import CopyEmailButton from '../components/CopyEmailButton.astro';
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import avatar from '../assets/avatar.png';
 import { socials, formatDate, site } from '../data/site';
 import { getRepos, langColor } from '../lib/github';
+import { graphSchema, personSchema, websiteSchema } from '../lib/seo';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -12,33 +15,31 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
 const repos = await getRepos(6);
 
-const personSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: 'abh1',
-  alternateName: 'abh1-0',
-  url: 'https://abh1.xyz/',
-  image: 'https://abh1.xyz/avatar.png',
-  jobTitle: 'Software Engineer & Full-Stack Architect',
-  sameAs: socials.filter((s) => s.href.startsWith('http')).map((s) => s.href)
-};
+const homeSchema = graphSchema(personSchema(), websiteSchema());
 ---
 
-<Base schema={personSchema}>
+<Base schema={homeSchema}>
   <div class="mx-auto max-w-4xl px-5 sm:px-6">
     <!-- Hero Section -->
     <section class="pb-16 pt-12 sm:pt-20">
       <div class="flex items-center justify-between rise rise-1">
-        <img
-          src="/avatar.png"
-          alt="abh1 avatar"
+        <Image
+          src={avatar}
+          alt="Portrait avatar of abh1, software engineer"
           width="80"
           height="80"
+          loading="eager"
+          fetchpriority="high"
           class="h-20 w-20 rounded-2xl ring-1 ring-white/10 shadow-lg object-cover"
         />
-        <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400">
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          Available for Select Projects
+        <div class="flex flex-col items-end gap-3">
+          <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Available for Select Projects
+          </div>
+          <span class="hidden font-mono text-[11px] tabular-nums tracking-wide text-zinc-500 sm:block">
+            Hyderabad, India &middot; {site.location.timezone}
+          </span>
         </div>
       </div>
 
@@ -49,7 +50,7 @@ const personSchema = {
       </h1>
 
       <p class="rise rise-3 mt-6 max-w-[62ch] text-lg leading-relaxed text-zinc-400">
-        I&rsquo;m <strong class="text-zinc-200">abh1</strong> &mdash; a software engineer building elegant web platforms, real-time telemetry tools, and open-source infrastructure. Focused on clean architecture, low-latency interfaces, and high visual craft.
+        I&rsquo;m <strong class="text-zinc-200">Abhiram Vunnava</strong> <span class="font-mono text-base text-zinc-500">(abh1)</span> &mdash; a software engineer based in <strong class="text-zinc-200">Hyderabad, India</strong>, building elegant web platforms, real-time telemetry tools, and open-source infrastructure. Focused on clean architecture, low-latency interfaces, and high visual craft.
       </p>
 
       <div class="rise rise-4 mt-8 flex flex-wrap items-center gap-3">

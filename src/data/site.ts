@@ -1,11 +1,20 @@
 export const site = {
   name: 'abh1',
+  legalName: 'Abhiram Vunnava',
   githubUser: 'abh1-0',
   url: 'https://abh1.xyz',
-  title: 'abh1 — Personal Portfolio & Technical Writing',
+  title: 'Abhiram Vunnava — Software Engineer Portfolio | abh1.xyz',
   description:
-    'Personal portfolio of abh1 — Software engineer crafting high-performance web software, developer tools, and systems architectures.',
+    'Portfolio of Abhiram Vunnava (abh1), software engineer based in Hyderabad, India — crafting high-performance web software, developer tools & systems.',
   role: 'Software Engineer & Full-Stack Architect',
+  location: {
+    city: 'Hyderabad',
+    region: 'Telangana',
+    country: 'India',
+    countryCode: 'IN',
+    regionCode: 'TG',
+    timezone: 'UTC+5:30'
+  },
   email: 'abhiramvun@gmail.com'
 } as const;
 

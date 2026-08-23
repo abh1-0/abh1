@@ -6,20 +6,41 @@ import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
+import {
+  absoluteUrl,
+  OG_IMAGE_ALT,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_URL,
+  OG_IMAGE_WIDTH
+} from '../lib/seo';
 
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  ogType?: 'website' | 'article' | 'profile';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  tags?: string[];
+  noindex?: boolean;
   schema?: Record<string, unknown>;
 }
 
 const {
   title = site.title,
   description = site.description,
+  image = OG_IMAGE_URL,
+  ogType = 'website',
+  publishedTime,
+  modifiedTime,
+  tags,
+  noindex = false,
   schema
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const canonical = absoluteUrl(Astro.url.pathname);
+const ogImage = new URL(image, Astro.site).toString();
+const jsonLd = schema ? JSON.stringify(schema).replace(/</g, '\\u003c') : null;
 ---
 
 <!doctype html>
@@ -29,6 +50,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content={`Abhiram Vunnava, abh1, ${site.name}.xyz, Abhiram Vunnava portfolio, software engineer Hyderabad, ${site.role}`}
+    />
+    <meta name="author" content={`${site.legalName} (${site.name})`} />
+    {!noindex && <meta name="robots" content="index, follow" />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="geo.region" content={`IN-${site.location.regionCode}`} />
+    <meta name="geo.placename" content={site.location.city} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -37,18 +67,34 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#09090b" />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={site.name} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={`${site.legalName} (${site.name})`} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL('/avatar.png', Astro.site)} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />
+    <meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />
+    <meta property="og:image:alt" content={OG_IMAGE_ALT} />
+    {ogType === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime.toISOString()} />
+    )}
+    {ogType === 'article' && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime.toISOString()} />
+    )}
+    {ogType === 'article' && (
+      <meta property="article:author" content={new URL('/', Astro.site).toString()} />
+    )}
+    {tags?.map((tag) => <meta property="article:tag" content={tag} />)}
+
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL('/avatar.png', Astro.site)} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={OG_IMAGE_ALT} />
 
-    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     <ClientRouter />
   </head>
   <body class="min-h-dvh">

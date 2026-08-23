@@ -2,9 +2,20 @@
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { formatDate } from '../../data/site';
+import { absoluteUrl, collectionPageSchema } from '../../lib/seo';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const blogIndexSchema = collectionPageSchema(
+  '/blog/',
+  'Writing & Notes — Abhiram Vunnava',
+  'Technical articles on web performance, architecture, and software engineering by Abhiram Vunnava (abh1), based in Hyderabad, India.',
+  posts.map((post) => ({
+    name: post.data.title,
+    url: absoluteUrl(`/blog/${post.id}/`)
+  }))
 );
 
 const byYear = new Map<number, typeof posts>();
@@ -19,7 +30,11 @@ const readingTime = (text: string | undefined) =>
   Math.max(1, Math.round((text?.trim().split(/\s+/).length ?? 0) / 220));
 ---
 
-<Base title="Writing & Notes — abh1" description="Technical articles, architecture deep-dives, and software engineering notes by abh1.">
+<Base
+  title="Writing & Notes — Abhiram Vunnava"
+  description="Technical articles on web performance, architecture, and software engineering by Abhiram Vunnava (abh1), based in Hyderabad, India."
+  schema={blogIndexSchema}
+>
   <div class="mx-auto max-w-4xl px-5 pt-16 sm:px-6 sm:pt-24">
     <h1 class="text-balance text-4xl font-semibold tracking-[-0.03em] text-zinc-50 sm:text-5xl">
       Writing

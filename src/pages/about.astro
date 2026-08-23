@@ -2,7 +2,10 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import CopyEmailButton from '../components/CopyEmailButton.astro';
+import { Image } from 'astro:assets';
+import avatar from '../assets/avatar.png';
 import { socials, site } from '../data/site';
+import { profilePageSchema } from '../lib/seo';
 
 const techStack = [
   {
@@ -71,8 +74,9 @@ const windowsExperiments = [
 ---
 
 <Base
-  title="About & Skills — abh1"
-  description="Engineering background, Windows OS experiments history, skills matrix, and career timeline of abh1."
+  title="About & Skills — Abhiram Vunnava"
+  description="Engineering background, Windows OS experiments history, skills matrix, and career timeline of Abhiram Vunnava (abh1), software engineer based in Hyderabad, India."
+  schema={profilePageSchema('/about/', 'About & Engineering — Abhiram Vunnava')}
 >
   <div class="mx-auto max-w-4xl px-5 pt-12 sm:px-6 sm:pt-20">
     <!-- Header -->
@@ -82,14 +86,18 @@ const windowsExperiments = [
           About & Engineering
         </h1>
         <p class="mt-4 text-base leading-relaxed text-zinc-400">
-          I&rsquo;m <strong class="text-zinc-200">abh1</strong>, a software engineer with a passion for building clean, resilient, and visually captivating software across web and low-level OS environments.
+          I&rsquo;m <strong class="text-zinc-200">Abhiram Vunnava</strong> <span class="font-mono text-sm text-zinc-500">(abh1)</span>, a software engineer with a passion for building clean, resilient, and visually captivating software across web and low-level OS environments.
+        </p>
+        <p class="mt-2 font-mono text-xs tabular-nums tracking-wide text-zinc-500">
+          Based in {site.location.city}, {site.location.country} &middot; {site.location.timezone}
         </p>
       </div>
-      <img
-        src="/avatar.png"
-        alt="abh1 avatar"
+      <Image
+        src={avatar}
+        alt="Portrait avatar of abh1, software engineer"
         width="110"
         height="110"
+        loading="eager"
         class="h-28 w-28 shrink-0 rounded-2xl ring-1 ring-white/10 shadow-xl object-cover"
       />
     </div>
@@ -186,7 +194,7 @@ const windowsExperiments = [
         Get in Touch
       </h2>
       <p class="mt-2 text-sm leading-relaxed text-zinc-400">
-        Have a project inquiry, architecture question, or opportunity? Drop me an email or connect on social platforms.
+        Have a project inquiry, architecture question, or opportunity? Drop me an email or connect on social platforms. Based in Hyderabad &mdash; typically responsive 10:00&ndash;22:00 IST.
       </p>
 
       <div class="mt-6 flex flex-wrap items-center gap-4">

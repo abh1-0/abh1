@@ -10,9 +10,13 @@ const year = new Date().getFullYear();
     class="mx-auto flex max-w-4xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6"
   >
     <p class="text-[13px] leading-relaxed text-zinc-500">
-      &copy; {year} abh1 &middot; <a
+      &copy; {year} <strong class="font-medium text-zinc-400">Abhiram Vunnava</strong>
+      <span class="text-zinc-600">(abh1)</span> &middot;
+      <span class="font-mono text-xs tabular-nums">Hyderabad, IN &middot; <span data-ist-clock>IST</span></span>
+      <a
         href={`mailto:${site.email}`}
-        class="transition-colors duration-150 hover:text-zinc-300">{site.email}</a
+        class="transition-colors duration-150 hover:text-zinc-300 block sm:inline"
+      >{site.email}</a
       >
       <span class="block sm:inline"><span class="sm:hidden">&middot; </span>Built with Astro.</span>
     </p>
@@ -35,3 +39,23 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </footer>
+
+<script>
+  function initIstClock() {
+    const el = document.querySelector('[data-ist-clock]');
+    if (!el) return;
+    const tick = () => {
+      const time = new Date().toLocaleTimeString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+      el.textContent = `${time} IST`;
+    };
+    tick();
+    setInterval(tick, 30_000);
+  }
+  document.addEventListener('astro:page-load', initIstClock);
+  document.addEventListener('DOMContentLoaded', initIstClock);
+</script>
